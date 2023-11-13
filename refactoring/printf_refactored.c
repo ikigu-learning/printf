@@ -14,15 +14,22 @@ int _printf(const char *format, ...)
 {
 	va_list arguments;
 	size_t bytes_written;
-	int i;
+	int i, j;
+
+	print_f ops[] = {
+	{'c', print_char},
+	{'s', print_string},
+	{'%', print_percent_char},
+	};
 
 	i = 0;
+	j = 0;
 	bytes_written = 0;
 
 	va_start(arguments, format);
 
 	if (!format)
-		return (0);
+		return (bytes_written);
 
 	while (format[i] != '\0')
 	{
@@ -30,19 +37,10 @@ int _printf(const char *format, ...)
 		{
 			bytes_written += print_as_is(&i, format);
 		}
-		else if (format[i + 1] == 'c')
+		else if (format[i + 1] == ops[j].converter)
 		{
-			bytes_written += print_char(&i, va_arg(arguments, int));
-			continue;
-		}
-		else if (format[i + 1] == 's')
-		{
-			bytes_written += print_string(&i, va_arg(arguments, char *));
-			continue;
-		}
-		else if (format[i + 1] == '%')
-		{
-			bytes_written += print_percent_char(&i, '%');
+			bytes_written += ops[j].f(&i, va_arg(arguments, void *));
+			j++;
 			continue;
 		}
 		i++;
