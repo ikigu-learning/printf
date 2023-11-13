@@ -1,1 +1,14 @@
-# printf
+# Custom printf function
+
+In this repository, we create a custom C ```printf``` function that handles the following conversion specifiers:
+
+*c
+*s
+*%
+*i
+*d
+
+## Authors
+
+*Kelvin Mabonga
+*George Ikigu
