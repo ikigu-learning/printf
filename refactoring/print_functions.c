@@ -10,9 +10,9 @@
 * Return: number of bytes written
 */
 
-int print_as_is(int i, const char *format)
+int print_as_is(int *i, const char *format)
 {
-	return (write(1, (format + i), 1));
+	return (write(1, (format + *i), 1));
 }
 
 /**
@@ -23,9 +23,9 @@ int print_as_is(int i, const char *format)
 * Return: number of bytes written
 */
 
-int print_char(int i, char character)
+int print_char(int *i, char character)
 {
-	i = i + 2;
+	*i = *i + 2;
 	return (write(1, &character, 1));
 }
 
@@ -37,9 +37,9 @@ int print_char(int i, char character)
 * Return: number of bytes written
 */
 
-int print_string(int i, char *string)
+int print_string(int *i, char *string)
 {
-	i = i + 2;
+	*i = *i + 2;
 	return (write(1, string, strlen(string)));
 }
 
@@ -51,8 +51,8 @@ int print_string(int i, char *string)
 * Return: number of bytes written
 */
 
-int print_percent_char(int i, char character)
+int print_percent_char(int *i, char character)
 {
-	i = i + 2;
+	*i = *i + 2;
 	return (write(1, &character, 1));
 }

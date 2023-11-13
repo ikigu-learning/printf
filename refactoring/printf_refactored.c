@@ -1,7 +1,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "main.h"
 
 /**
@@ -22,25 +21,31 @@ int _printf(const char *format, ...)
 
 	va_start(arguments, format);
 
-	if (format != NULL)
+	if (!format)
+		return (0);
+
+	while (format[i] != '\0')
 	{
-		while (format[i] != '\0')
+		if (format[i] != '%')
 		{
-			if (format[i] != '%')
-			{
-				bytes_written += print_as_is(i, format);
-			}
-			else
-			{
-				if (format[i + 1] == 'c')
-					bytes_written += print_char(i, va_arg(arguments, int));
-				else if (format[i + 1] == 's')
-					bytes_written += print_string(i, va_arg(arguments, char *));
-				else if (format[i + 1] == '%')
-					bytes_written += print_percent_char(i, '%');
-			}
-			i++;
+			bytes_written += print_as_is(&i, format);
 		}
+		else if (format[i + 1] == 'c')
+		{
+			bytes_written += print_char(&i, va_arg(arguments, int));
+			continue;
+		}
+		else if (format[i + 1] == 's')
+		{
+			bytes_written += print_string(&i, va_arg(arguments, char *));
+			continue;
+		}
+		else if (format[i + 1] == '%')
+		{
+			bytes_written += print_percent_char(&i, '%');
+			continue;
+		}
+		i++;
 	}
 
 	va_end(arguments);
