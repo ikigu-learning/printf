@@ -108,6 +108,52 @@ int _printf(const char *format, ...)
 			i += 2;
 			continue;
 		}
+		else if (format[i + 1] == 'u')
+		{
+			unsigned int number = va_arg(arguments, unsigned int);
+
+			char buffer[20];
+			int j = 0;
+			int beginning, end;
+
+			if (number == 0)
+			{
+				bytes_written += write(1, "0", 1);
+				i += 2;
+				continue;
+			}
+
+			while (number > 0)
+			{
+				buffer[j++] = '0' + (number % 10);
+				number /= 10;
+			}
+
+			buffer[j] = '\0';
+
+			beginning = 0, end = j - 1;
+
+			while (beginning < end)
+			{
+				char b = *(buffer + beginning);
+				char e = *(buffer + end);
+
+				if (beginning == end || beginning > end)
+				{
+					break;
+				}
+
+				*(buffer + beginning) = e;
+				*(buffer + end) = b;
+
+				beginning++;
+				end--;
+			}
+
+			bytes_written += write(1, buffer, j);
+			i += 2;
+			continue;
+		}
 		i++;
 	}
 
