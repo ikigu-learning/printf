@@ -12,6 +12,7 @@
 * Return: the number of bytes printed
 */
 
+
 int _printf(const char *format, ...)
 {
 	va_list arguments;
@@ -43,7 +44,7 @@ int _printf(const char *format, ...)
 		else if (format[i + 1] == 's')
 		{
 			char *string = va_arg(arguments, char *);
-
+			
 			bytes_written += write(1, string, strlen(string));
 			i += 2;
 			continue;
@@ -69,7 +70,7 @@ int _printf(const char *format, ...)
 				bytes_written += write(1, "0", 1);
 				i += 2;
 				continue;
-			}
+			} 
 
 			if (number < 0)
 			{
@@ -159,5 +160,5 @@ int _printf(const char *format, ...)
 
 	va_end(arguments);
 
-	return (bytes_written);
+	return ((int)bytes_written);
 }
