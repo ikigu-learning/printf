@@ -35,17 +35,13 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i + 1] == 'c')
 		{
-			char character = va_arg(arguments, int);
-
-			bytes_written += write(1, &character, 1);
+			bytes_written += print_char(arguments);
 			i += 2;
 			continue;
 		}
 		else if (format[i + 1] == 's')
 		{
-			char *string = va_arg(arguments, char *);
-			
-			bytes_written += write(1, string, strlen(string));
+			bytes_written += print_string(arguments);
 			i += 2;
 			continue;
 		}
@@ -59,99 +55,13 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i + 1] == 'd' || format[i + 1] == 'i')
 		{
-			int number = va_arg(arguments, int);
-
-			char buffer[20];
-			int j = 0;
-			int beginning, end;
-
-			if (number == 0)
-			{
-				bytes_written += write(1, "0", 1);
-				i += 2;
-				continue;
-			} 
-
-			if (number < 0)
-			{
-				bytes_written += write(1, "-", 1);
-				number = -number;
-			}
-
-			while (number > 0)
-			{
-				buffer[j++] = '0' + (number % 10);
-				number /= 10;
-			}
-
-			buffer[j] = '\0';
-
-			beginning = 0, end = j - 1;
-
-			while (beginning < end)
-			{
-				char b = *(buffer + beginning);
-				char e = *(buffer + end);
-
-				if (beginning == end || beginning > end)
-				{
-					break;
-				}
-
-				*(buffer + beginning) = e;
-				*(buffer + end) = b;
-
-				beginning++;
-				end--;
-			}
-
-			bytes_written += write(1, buffer, j);
+			bytes_written += print_int(arguments);
 			i += 2;
 			continue;
 		}
 		else if (format[i + 1] == 'u')
 		{
-			unsigned int number = va_arg(arguments, unsigned int);
-
-			char buffer[20];
-			int j = 0;
-			int beginning, end;
-
-			if (number == 0)
-			{
-				bytes_written += write(1, "0", 1);
-				i += 2;
-				continue;
-			}
-
-			while (number > 0)
-			{
-				buffer[j++] = '0' + (number % 10);
-				number /= 10;
-			}
-
-			buffer[j] = '\0';
-
-			beginning = 0, end = j - 1;
-
-			while (beginning < end)
-			{
-				char b = *(buffer + beginning);
-				char e = *(buffer + end);
-
-				if (beginning == end || beginning > end)
-				{
-					break;
-				}
-
-				*(buffer + beginning) = e;
-				*(buffer + end) = b;
-
-				beginning++;
-				end--;
-			}
-
-			bytes_written += write(1, buffer, j);
+			bytes_written += print_unsigned(arguments);
 			i += 2;
 			continue;
 		}
