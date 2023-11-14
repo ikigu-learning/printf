@@ -14,3 +14,9 @@ This `printf` function will handle the following conversion specifiers:
 
 - Kelvin Mabonga
 - George Ikigu
+
+## Running the program
+
+A bash script is included to recompile and run the program. To run the script, you can use the following command:
+
+`./run`
