@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "main.h"
 
 /**
@@ -14,16 +15,9 @@ int _printf(const char *format, ...)
 {
 	va_list arguments;
 	size_t bytes_written;
-	int i, j;
-
-	print_f ops[] = {
-	{'c', print_char},
-	{'s', print_string},
-	{'%', print_percent_char},
-	};
+	int i;
 
 	i = 0;
-	j = 0;
 	bytes_written = 0;
 
 	va_start(arguments, format);
@@ -35,12 +29,30 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			bytes_written += print_as_is(&i, format);
+			bytes_written += write(1, &format[i], 1);
 		}
-		else if (format[i + 1] == ops[j].converter)
+		else if (format[i + 1] == 'c')
 		{
-			bytes_written += ops[j].f(&i, va_arg(arguments, void *));
-			j++;
+			char character = va_arg(arguments, int);
+
+			bytes_written += write(1, &character, 1);
+			i += 2;
+			continue;
+		}
+		else if (format[i + 1] == 's')
+		{
+			char *string = va_arg(arguments, char *);
+
+			bytes_written += write(1, string, strlen(string));
+			i += 2;
+			continue;
+		}
+		else if (format[i + 1] == '%')
+		{
+			char percent = '%';
+
+			bytes_written += write(1, &percent, 1);
+			i += 2;
 			continue;
 		}
 		i++;
