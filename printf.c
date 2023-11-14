@@ -55,6 +55,15 @@ int _printf(const char *format, ...)
 			i += 2;
 			continue;
 		}
+		else if (format[i + 1] == 'd' || format[i + 1] == 'i')
+		{
+			int number = va_arg(arguments, int);
+
+			bytes_written += write(1, &number, sizeof(int));
+			i += 2;
+
+			continue;
+		}
 		i++;
 	}
 
