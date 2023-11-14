@@ -13,8 +13,8 @@ int print_percent_char(int *i, void *ptr);
 
 /**
  * struct print_f - a struct
- * @converter: a formatter
- * @f: function to be called
+ * @converter: a conversion specifier
+ * @f: function to handle the specifier
 */
 
 struct print_f
